@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* 
+  Tailwind v4 manually configured for .dark class strategy
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Outfit', 'Inter', system-ui, sans-serif;
+  --color-primary: #6366f1;
+  --color-primary-dark: #4338ca;
+
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+  --animate-slide-up: slide-up 0.6s ease-out forwards;
+  --animate-scale-in: scale-in 0.4s ease-out forwards;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --bg-app: #f1f5f9;
+    --text-app: #0b1220;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --bg-app: #071421;
+    /* Slightly off-black for better contrast */
+    --text-app: #f8fafc;
+  }
+
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-app);
+    @apply m-0 min-h-screen antialiased transition-colors duration-500 selection:bg-indigo-500/30 overflow-x-hidden relative;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Animated Background Mesh */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.04), transparent 30%),
+      radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.04), transparent 30%);
+    pointer-events: none;
+  }
+
+  .dark body::before {
+    background:
+      radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 45%);
+  }
+}
+
+@layer components {
+
+  /* Premium Glass Card - Enhanced */
+  .glass-card {
+    @apply bg-white/60 dark:bg-zinc-900/50;
+    @apply backdrop-blur-lg backdrop-saturate-150;
+    /* Increased blur and saturation for "pop" */
+    @apply border border-white/50 dark:border-white/8;
+    @apply shadow-md shadow-indigo-500/10 dark:shadow-black/40;
+    @apply rounded-2xl transition-all duration-200;
+  }
+
+  /* Hover Lift */
+  .hover-lift {
+    @apply hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-200;
+  }
+
+  /* Standard Inputs */
+  .input-field {
+    @apply w-full h-10 px-3 rounded-lg bg-white/55 dark:bg-zinc-900/55 backdrop-blur-sm;
+    @apply border border-slate-200 dark:border-zinc-800;
+    @apply text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-600;
+    @apply focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/25;
+    @apply transition-all duration-200;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-150;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/25;
+  }
+
+  /* Layout Container */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in;
+  }
+}
+
+/* Slim Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-zinc-700 rounded-full transition-colors;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-indigo-500/50 dark:bg-indigo-500/50;
+}
