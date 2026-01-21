@@ -62,24 +62,24 @@ const RoutinesManager = () => {
         <div className="space-y-8 animate-fade-in max-w-5xl mx-auto pb-10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">My Routines</h1>
+                    <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">My Routines</h1>
                     <p className="text-slate-500 dark:text-zinc-400 mt-2 font-medium text-lg">Manage your daily habits and goals</p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                     <Button
                         onClick={() => {
                             if (window.confirm('Are you sure you want to remove ALL routines? This cannot be undone.')) {
                                 deleteAllRoutines();
                             }
                         }}
-                        className="gap-2 bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:-translate-y-0.5 transition-all duration-300"
+                        className="gap-2 bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto justify-center"
                     >
                         <Trash2 size={20} />
                         Remove All
                     </Button>
                     <Button
                         onClick={() => setIsModalOpen(true)}
-                        className="gap-2 shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:bg-indigo-500 hover:-translate-y-0.5 transition-all duration-300"
+                        className="gap-2 shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:bg-indigo-500 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto justify-center"
                     >
                         <Plus size={20} />
                         New Routine
@@ -109,7 +109,8 @@ const RoutinesManager = () => {
                 </select>
             </div>
 
-            <div className="glass-card overflow-hidden rounded-3xl border border-white/60 dark:border-white/5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl shadow-xl shadow-slate-200/50 dark:shadow-none">
+            {/* Desktop Table View */}
+            <div className="hidden sm:block glass-card overflow-hidden rounded-3xl border border-white/60 dark:border-white/5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl shadow-xl shadow-slate-200/50 dark:shadow-none">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left bg-transparent">
                         <thead className="text-xs uppercase text-slate-500 dark:text-zinc-400 bg-slate-50/50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
@@ -213,27 +214,89 @@ const RoutinesManager = () => {
                             ))}
                         </tbody>
                     </table>
-
-                    {filteredAndSortedRoutines.length === 0 && (
-                        <div className="py-20 flex flex-col items-center justify-center text-slate-400 dark:text-zinc-500">
-                            <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
-                                <Activity size={32} className="text-slate-300 dark:text-zinc-600" />
-                            </div>
-                            <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">No routines found</h3>
-                            <p className="text-sm font-medium mb-6 text-center max-w-xs">
-                                {searchTerm || filterPriority !== 'all'
-                                    ? "Try adjusting your search or filters."
-                                    : "Create your first routine to start tracking."}
-                            </p>
-                            {(!searchTerm && filterPriority === 'all') && (
-                                <Button onClick={() => setIsModalOpen(true)} className="shadow-lg shadow-indigo-500/20">
-                                    Create First Routine
-                                </Button>
-                            )}
-                        </div>
-                    )}
                 </div>
             </div>
+
+            {/* Mobile Card View */}
+            <div className="block sm:hidden space-y-4">
+                {filteredAndSortedRoutines.map((routine) => (
+                    <div
+                        key={routine.id}
+                        className="glass-card p-5 rounded-2xl border border-white/60 dark:border-white/5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl shadow-lg relative overflow-hidden"
+                    >
+                        <div className="flex justify-between items-start mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className={cn(
+                                    "w-10 h-10 rounded-xl flex items-center justify-center shadow-sm",
+                                    "bg-gradient-to-br from-indigo-500 to-violet-600 text-white"
+                                )}>
+                                    <span className="font-bold text-sm">
+                                        {routine.name.charAt(0).toUpperCase()}
+                                    </span>
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-slate-900 dark:text-white leading-tight">
+                                        {routine.name}
+                                    </h3>
+                                    <div className="flex items-center text-xs text-slate-500 dark:text-zinc-400 mt-1">
+                                        <Clock size={12} className="mr-1" />
+                                        {format(new Date(routine.created_at), 'MMM d')}
+                                    </div>
+                                </div>
+                            </div>
+                            {routine.priority && (
+                                <span className={cn(
+                                    "text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wider",
+                                    routine.priority >= 4 ? "bg-red-50 text-red-600 border border-red-100/50" :
+                                        routine.priority === 1 ? "bg-emerald-50 text-emerald-600 border border-emerald-100/50" :
+                                            "bg-indigo-50 text-indigo-600 border border-indigo-100/50"
+                                )}>
+                                    {routine.priority === 5 ? 'Urgent' : routine.priority === 1 ? 'Low' : 'Imp'}
+                                </span>
+                            )}
+                        </div>
+
+                        <div className="flex gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
+                            <Button
+                                variant="ghost"
+                                className="flex-1 justify-center h-9 text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 rounded-xl"
+                                onClick={() => handleEdit(routine)}
+                            >
+                                <Pencil size={14} className="mr-2" />
+                                Edit
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                className="flex-1 justify-center h-9 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 rounded-xl"
+                                onClick={() => deleteRoutine(routine.id)}
+                            >
+                                <Trash2 size={14} className="mr-2" />
+                                Delete
+                            </Button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Empty State (Shared) */}
+            {filteredAndSortedRoutines.length === 0 && (
+                <div className="glass-card py-20 flex flex-col items-center justify-center text-slate-400 dark:text-zinc-500 rounded-3xl">
+                    <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
+                        <Activity size={32} className="text-slate-300 dark:text-zinc-600" />
+                    </div>
+                    <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">No routines found</h3>
+                    <p className="text-sm font-medium mb-6 text-center max-w-xs">
+                        {searchTerm || filterPriority !== 'all'
+                            ? "Try adjusting your search or filters."
+                            : "Create your first routine to start tracking."}
+                    </p>
+                    {(!searchTerm && filterPriority === 'all') && (
+                        <Button onClick={() => setIsModalOpen(true)} className="shadow-lg shadow-indigo-500/20">
+                            Create First Routine
+                        </Button>
+                    )}
+                </div>
+            )}
 
             <AddRoutineModal
                 isOpen={isModalOpen}
