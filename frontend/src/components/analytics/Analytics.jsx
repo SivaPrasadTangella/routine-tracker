@@ -196,8 +196,8 @@ const Analytics = () => {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-start">
+        <div className="space-y-6 pb-20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Analytics</h1>
                     <p className="text-slate-500 dark:text-zinc-400 font-medium">Progress over time</p>
@@ -208,7 +208,7 @@ const Analytics = () => {
                             resetAllHistory();
                         }
                     }}
-                    className="flex items-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors border border-red-200 dark:border-red-900/30 text-sm font-bold"
+                    className="flex items-center justify-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors border border-red-200 dark:border-red-900/30 text-sm font-bold w-full sm:w-auto"
                 >
                     <RefreshCcw size={16} />
                     Reset Progress
@@ -216,7 +216,7 @@ const Analytics = () => {
             </div>
 
             {/* Main Chart */}
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
+            <div className="bg-white dark:bg-zinc-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
@@ -227,7 +227,7 @@ const Analytics = () => {
                         </h3>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         <div className="flex bg-slate-100 dark:bg-zinc-950 p-1 rounded-lg">
                             {['week', 'month', 'year'].map((mode) => (
                                 <button
@@ -245,11 +245,11 @@ const Analytics = () => {
                             ))}
                         </div>
 
-                        <div className="flex items-center gap-1 bg-slate-100 dark:bg-zinc-950 rounded-lg p-1 border border-slate-200 dark:border-zinc-800">
+                        <div className="flex items-center gap-1 bg-slate-100 dark:bg-zinc-950 rounded-lg p-1 border border-slate-200 dark:border-zinc-800 flex-1 sm:flex-none justify-between sm:justify-start">
                             <button onClick={handlePrev} className="p-1 hover:bg-white dark:hover:bg-zinc-800 rounded">
                                 <ChevronLeft size={16} />
                             </button>
-                            <span className="text-xs font-bold text-slate-700 dark:text-zinc-300 px-2 min-w-[120px] text-center">
+                            <span className="text-xs font-bold text-slate-700 dark:text-zinc-300 px-2 min-w-[120px] text-center whitespace-nowrap">
                                 {getDateLabel()}
                             </span>
                             <button onClick={handleNext} className="p-1 hover:bg-white dark:hover:bg-zinc-800 rounded">
@@ -259,7 +259,7 @@ const Analytics = () => {
                     </div>
                 </div>
 
-                <div className="h-[300px] w-full">
+                <div className="h-[250px] sm:h-[300px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={chartData}>
                             <XAxis
@@ -289,7 +289,6 @@ const Analytics = () => {
 
             <div className="grid md:grid-cols-2 gap-6">
                 {/* Performance */}
-                {/* Performance */}
                 <div className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/50 dark:border-zinc-800 shadow-xl dark:shadow-none p-6 rounded-3xl transition-all duration-300">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
@@ -308,16 +307,16 @@ const Analytics = () => {
                     </div>
 
                     {chartType === 'pie' ? (
-                        <div className="h-[350px] w-full flex items-center justify-center">
+                        <div className="h-[300px] sm:h-[350px] w-full flex items-center justify-center">
                             {routinePerformance.length > 0 ? (
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart margin={{ top: 20, bottom: 20 }}>
                                         <Pie
                                             data={routinePerformance.slice(0, 5)}
                                             cx="50%"
-                                            cy="45%"
+                                            cy="50%"
                                             innerRadius={60}
-                                            outerRadius={90}
+                                            outerRadius={80}
                                             paddingAngle={5}
                                             dataKey="rate"
                                             nameKey="name"
