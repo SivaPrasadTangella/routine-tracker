@@ -36,7 +36,15 @@ export const AddRoutineModal = ({ isOpen, onClose, onSave, initialData = null })
     const handleSubmit = (e) => {
         e.preventDefault();
         if (name.trim()) {
-            onSave({ name, color, priority, reminder_time, notify_email, notify_sms });
+            const payload = {
+                name,
+                color,
+                priority,
+                reminder_time: reminder_time || null,
+                notify_email,
+                notify_sms
+            };
+            onSave(payload);
             if (!initialData) {
                 setName('');
                 setColor('bg-indigo-500');
